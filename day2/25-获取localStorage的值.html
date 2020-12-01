@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<button type="button" id="btn">绑定点击事件</button>
+		<button type="button" id="btn1">获取缓存</button>
+		<script type="text/javascript">
+			console.log(window.localStorage.getItem('text'));
+			// function show(){
+			// 	console.log("函数1执行了");
+			// }
+			// function show2(){
+			// 	console.log("函数2执行了");
+			// }
+			var oBtn = document.getElementById('btn');
+			//on这种绑定，只执行最后一个
+			// oBtn.onclick = function(){
+			// 	console.log("函数1执行了");
+			// }
+			// oBtn.onclick = function(){
+			// 	console.log("函数2执行了");
+			// }
+			
+			//addEventListener事件监听，事件绑定，特点：可以绑定多个同类型事件，
+			//addEventListener()
+			//参数有三个：
+			/*
+			1.绑定的事件类型
+			2.绑定的函数
+			3.是冒泡还是捕获时运行
+			*/
+			oBtn.addEventListener("click",function(){
+				console.log("函数1执行了");
+			},true);
+			oBtn.addEventListener("click",function(){
+				console.log("函数2执行了");
+			},true);
+			
+			//var oBtn1 = document.getElementById('btn1');
+			window.addEventListener("storage",function(ev){
+				console.log(ev);
+				/*
+				Key : 设置或删除的key值，如果调用clear(),key为null				newValue  :  新设置的值，如果调用removeStorage(),key为null				oldValue :  调用改变前的value值				storageArea : 当前的storage对象				url :  触发该脚本变化的文档的url
+				*/
+			},true);
+			
+		</script>
+	</body>
+</html>

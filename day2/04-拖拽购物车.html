@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			*{margin:0;padding:0;}
+			#shop{display: flex; }
+			#shop div{width: 200px;  margin-left:15px; border:1px solid #000;}
+			#shop div img{width:100%;height: 250px;}
+			#shop div p{background: #ADD8E6; border-bottom: 1px solid #000;}
+			h3{margin:14px;}
+			#cart{border:1px dotted red; width: 851px; min-height:300px ; margin-left:14px; }
+			#cart p{border-bottom: 1px dotted #000;}
+			#cart p span{margin-left:30px;}
+			#cart .allMoney{text-align: right;}
+		</style>
+	</head>
+	<body>
+		<div id="shop">
+			<div>
+				<img src="../img/img1.jpg" />
+				<p>javascript语言精粹</p>
+				<p>40￥</p>
+			</div>
+			<div>
+				<img src="../img/img2.jpg" />
+				<p>javascript权威指南</p>
+				<p>50￥</p>
+			</div>
+			<div>
+				<img src="../img/img3.jpg" />
+				<p>精通javascript</p>
+				<p>30￥</p>
+			</div>
+			<div>
+				<img src="../img/img4.jpg" />
+				<p>javascript编程艺术</p>
+				<p>60￥</p>
+			</div>
+		</div>
+		<h3>拖拽购物车如下：</h3>
+		<div id="cart">
+			<!-- <p>
+				<span>1</span>
+				<span>javascript语言精粹</span>
+				<span>40￥</span>
+			</p> -->
+			<div class="allMoney" id="moneyDiv">总价：<span id="money">0</span>￥</div>
+		</div>
+		
+		<script type="text/javascript">
+			window.onload = function(){
+				//1.初始化
+				var oShop = document.getElementById('shop');
+				var aDivShop = oShop.getElementsByTagName('div');
+				var oCart = document.getElementById('cart');
+				var oMoney = document.getElementById('money');
+				var oMoneyDiv = document.getElementById('moneyDiv');
+				//保存购物中心是否有相应的书籍
+				var obj = {};
+				//2.给每本书设置拖拽属性
+				for(var i= 0; i< aDivShop.length;i++){
+					aDivShop[i].draggable = true;
+				}
+				
+				//绑定开始拖拽的事件
+				for(var i = 0;i<aDivShop.length;i++){
+					aDivShop[i].ondragstart = function(ev){
+						console.log("开始拖拽");
+						//获取你拖拽的div中的p元素
+						var aP = this.getElementsByTagName('p');
+						//console.log(aP);
+						//需要传递参数：书名，书的价格
+						ev.dataTransfer.setData('bookName',aP[0].innerHTML);
+						ev.dataTransfer.setData('bookPrice',aP[1].innerHTML);
+					}	
+				}
+				
+				//绑定在目的地上的事件
+				oCart.ondragover = function(ev){
+					//阻止默认事件
+					ev.preventDefault();
+				}
+				//绑定在目的地释放鼠标的事件
+				oCart.ondrop = function(ev){
+					console.log("已经在目标元素上释放鼠标");
+					//接收书的价格和名字
+					var bookName = ev.dataTransfer.getData('bookName');
+					var bookPrice = ev.dataTransfer.getData('bookPrice');
+					console.log(bookName,bookPrice);
+					//创建dom对象，添加到 cart标签里
+					
+					//判断obj中是否有这本书
+					if(!obj[bookName]){//没有这本书
+						console.log("没有这种书，请添加");
+						//1.1创建p标签
+						var oP = document.createElement('p');
+						//1.2创建 span 
+						var oSpan1 = document.createElement('span');
+						oSpan1.innerHTML = 1;//书的数量
+						oSpan1.className="span1";
+						var oSpan2 = document.createElement('span');
+						oSpan2.innerHTML = bookName;
+						oSpan2.className = "span2";
+						var oSpan3 = document.createElement('span');
+						oSpan3.className = "span3";
+						oSpan3.innerHTML = bookPrice;
+						oP.appendChild(oSpan1);
+						oP.appendChild(oSpan2);
+						oP.appendChild(oSpan3);
+						//将p标签添加到总价标签的上面
+						this.insertBefore(oP,oMoneyDiv);
+						//第一次添加购物车时将书籍放到 obj中
+						obj[bookName] = 1;
+					}else{//obj中存在这本书
+						console.log("这种书已经在购物车中，请修改它的数量");
+						
+						//修改数量
+						var aSpan1 = document.getElementsByClassName('span1');
+						var aSpan2 = document.getElementsByClassName('span2');
+						for(var i = 0;i<aSpan1.length;i++){
+							if(aSpan2[i].innerHTML === bookName){//找到这本书
+								//修改数量  +aSpan1[i].innerHTML 这个加号可以将字符串转整型数
+								aSpan1[i].innerHTML = +aSpan1[i].innerHTML + 1;
+							}
+						}
+					}
+					
+					//计算总价
+					var aSpan3 = document.getElementsByClassName('span3');
+					var aSpan1 = document.getElementsByClassName('span1');
+					
+					var sum = 0;
+					for(var i = 0;i<aSpan3.length;i++){
+						sum += +aSpan1[i].innerHTML * parseInt(aSpan3[i].innerHTML);
+					}
+					console.log(sum);
+					//将总价保存到money中
+					oMoney.innerHTML = sum ;
+					
+				}
+				
+				
+			}
+		</script>
+	</body>
+</html>

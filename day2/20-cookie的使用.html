@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="./jquery-1.9.0.min.js"></script>
+		<script src="./jquery.cookie.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			/*
+			cookie的特点：
+			1.存储容量小 4K
+			2.可以跨页传参，不能跨浏览器，
+			3.可以将cookie传输到服务端
+			4.cookie不可以保存 数组或对象，想要保存这些，必须先做序列化处理 ，  
+			将对象或数组序列化可以 使用 JSON.stringify()
+			
+			缺点：
+			1.存储容量小
+			2.有安全性问题
+			3.影响效率每次请求都会发往服务器
+			
+			*/
+			
+			//1.创建cookie
+			$.cookie("name","大龙");
+			$.cookie("age","22");
+			$.cookie("sex","男");
+			//下面这句不正确
+			//$.cookie("test",{"name":"lili"});
+			//需要进行序列化
+			$.cookie("test",JSON.stringify({"name":"lili"}));
+			
+			//设置带过期时间的cookie
+			//{expires:4} 设置过期时间，4代表4天，到了过期时间后cookie会失效
+			$.cookie("class","二年级",{expires:4});
+			//设置存储路径的
+			$.cookie("class2","三年级",{expires:2,path:'/'});
+			
+		</script>
+	</body>
+</html>

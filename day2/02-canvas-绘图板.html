@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas基础</title>
+		<style type="text/css">
+			#can{background: lightblue;}
+		</style>
+	</head>
+	<body>
+		<!--canvas画板，是ie8以上浏览器才支持, canvas的宽高必须在标签中设置，不可以在css样式表中设置-->
+		<canvas id="can" width="800" height="600">浏览器不支持该标记</canvas>
+		<br/>
+		<input type="color" value="" id="color" placeholder="请选择颜色" />
+		<p>字体的粗细</p>
+		<input type="range" class="box2" max="100" min="1" value="1"  id="box2" />
+		<div class="box3" id="box3">1</div>
+		<div id="box4">橡皮擦</div>
+		<script type="text/javascript">
+			window.onload = function(){
+				//1.获取元素
+				var oC = document.getElementById('can');
+				var oBox2 = document.getElementById('box2');
+				var oBox3 = document.getElementById('box3');
+				var oBox4 = document.getElementById('box4');
+				//2.设置画板的2D效果
+				var oGC = oC.getContext('2d');
+				var oColor = document.getElementById('color'); 
+				var mycolor = '#000';
+				//需要使用onmousedown onmousemove onmouseup
+				//设置颜色
+				oColor.onchange = function(){
+					mycolor = this.value;
+					console.log(this.value);
+					oGC.strokeStyle = mycolor;
+				}
+				//设置粗细
+				oBox2.onchange = function(){
+					oBox3.innerHTML = this.value;
+					oGC.lineWidth = this.value;
+				}
+				//设置橡皮擦
+				oBox4.onclick = function(){
+					oGC.strokeStyle = "lightblue";
+				}
+				//3.开始画图，绑定鼠标按下的事件
+				oC.onmousedown = function(ev){
+					//4.获取按下时的光标位置
+					console.log(ev);
+					var x = ev.clientX - oC.offsetLeft;
+					var y = ev.clientY - oC.offsetTop;
+					
+					//开始画线
+					oGC.beginPath();
+					oGC.moveTo(x,y);
+					//绑定鼠标移动事件
+					document.onmousemove = function(ev){
+						var x1 = ev.clientX - oC.offsetLeft;
+						var y1 = ev.clientY - oC.offsetTop;
+						//画下一点坐标
+						oGC.lineTo(x1,y1);
+						//画
+						oGC.stroke();
+					}
+					//绑定鼠标抬起事件
+					document.onmouseup = function(ev){
+						//对onmousedown事件解除绑定
+						document.onmousemove = null;
+					}
+				}
+				
+			}
+			/*
+			作业：做一个画图板效果，选择颜色，选择线的粗细，选做线型，橡皮擦
+			*/
+		</script>
+	</body>
+</html>
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>使用hash实现历史记录保存彩票信息</title>
+		<style type="text/css">
+			#box{border:3px dotted green;display: flex;}
+			#box div:last-of-type {border:2px solid blue;}
+			.mycolor{
+				border-radius: 50%; width:50px; height:50px;text-align: center; line-height: 50px;margin:10px;border:2px solid red;
+			}
+		</style>
+	</head>
+	<body>
+		<input id="btn" type="button" value="获取随机彩票" />
+		<div id="box"></div>
+		<script type="text/javascript">
+			window.onload = function(){
+				var oBtn = document.getElementById('btn');
+				var oBox = document.getElementById('box');
+				//绑定点击事件
+				oBtn.onclick = function(){
+					//获取随机彩票 红球
+					var numArr = myRandom(1,33,6);
+					
+					//获取蓝球
+					numArr = numArr.concat(myRandom(1,16,1));
+					console.log(numArr);
+					//将随机数放到历史记录中
+					window.location.hash = numArr;
+					//将随机数放到box的div中
+					
+					setColor(numArr);
+					//使用 onhashchange 事件，完成点击返回上一页按钮时，显示上次的彩票数据
+					//onhashchange,只要hash值发生变化就会被触发
+					window.onhashchange = function(){
+						console.log(window.location.hash);
+						//获取hash值，去掉 #，添加到 oBox中
+						var mystr = window.location.hash.substring(1);
+						if(mystr != ''){
+							//将字符串转数组
+							var numArr = mystr.split(',');
+							//调用颜色的函数
+							setColor(numArr);
+						}else{
+							oBox.innerHTML = "历史记录已经查看完";
+						}
+							
+					}
+					//设置红球和篮球的颜色
+					function setColor(numArr){
+						var str = '';
+						for(var i  =0;i<numArr.length;i++){
+							str += `<div class="mycolor">${numArr[i]}</div>`;
+						}
+						oBox.innerHTML = str;
+					}
+				}
+				
+				
+				
+				//随机数的函数
+				/*start:随机数的开始
+				end：随机数的结束
+				num：随机数的个数
+				*/
+			    //作业：1.随机的彩票需要去重
+				//2.需要随机获取一个篮球 1-16
+				//3.如果返回到没有hash时请给出提示信息
+				//4.需要排版
+				function myRandom(start,end,num){
+					var re = [];//保存取的随机数
+					for(var i = 0;i<num;i++){
+						//取随机数
+						var num1 = Math.floor(Math.random()*end+start);
+						//查看数组中是否有该元素
+						if(re.indexOf(num1) != -1){//数组 中存在该值
+							i--;
+						}else{//数组中没有这个值
+							//将随机数保存到数组
+							re.push(num1);
+						}
+					}
+					return re;
+					
+				}
+				
+			}
+		</script>
+	</body>
+</html>

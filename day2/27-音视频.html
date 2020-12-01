@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script type="text/javascript">
+			window.onload = function(){
+				var oV = document.getElementsByTagName('video')[0];
+				var aBtn = document.getElementsByTagName('button');
+				oV.poster = '../img/111.jpg';
+				
+				aBtn[0].onclick = function(){
+					console.log("播放时间："+oV.currentTime);
+					console.log("控制："+oV.controls);
+					console.log("是否循环："+oV.loop);
+					console.log("媒体的总时间："+oV.duration);
+					console.log("音量："+oV.volume);
+					console.log("静音："+oV.muted);
+				}
+				aBtn[1].onclick = function(){
+					oV.play();
+					
+				}
+				aBtn[2].onclick = function(){
+					oV.pause();
+				}
+				aBtn[3].onclick = function(){
+					oV.load();
+				}
+				
+			}
+			
+		</script>
+	</head>
+	<body>
+		<!--
+		controls="controls" 控制条
+		autoplay="autoplay" 自动播放
+		loop="loop" 循环播放
+		preload="auto"  预加载 
+		-->
+		<video src="data/001.mp4"  preload="auto"></video>
+		<button>获取属性值</button>
+		<button>播放</button>
+		<button>暂停</button>
+		<button>重新加载</button>
+		
+	</body>
+</html>

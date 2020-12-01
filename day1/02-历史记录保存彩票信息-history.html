@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>使用hash实现历史记录保存彩票信息</title>
+		<style type="text/css">
+			#box{border:3px dotted green ;}
+		</style>
+	</head>
+	<body>
+		<input id="btn" type="button" value="获取随机彩票" />
+		<div id="box"></div>
+		<script type="text/javascript">
+			window.onload = function(){
+				var oBtn = document.getElementById('btn');
+				var oBox = document.getElementById('box');
+				//绑定点击事件
+				oBtn.onclick = function(){
+					//随机数/时间戳
+					var date = new Date();
+					var key = date.getTime();
+					console.log(key);
+					//获取六个红球
+					var numArr = myRandom(1,33,6);
+					//将数组保存到 history
+					//参数：1.将要存进去的数组，2.标题（忽略不写），3.地址  #+唯一标识符
+					window.history.pushState(numArr,"","#"+key);
+					oBox.innerHTML = numArr;
+				}
+				
+				//绑定历史记录的事件
+				window.onpopstate = function(event){
+					console.log(event.state);
+					oBox.innerHTML = event.state;
+				}
+				
+				
+				//随机数的函数
+				/*start:随机数的开始
+				end：随机数的结束
+				num：随机数的个数
+				*/
+				function myRandom(start,end,num){
+					var re = [];//保存取的随机数
+					for(var i = 0;i<num;i++){
+						//取随机数
+						var num1 = Math.floor(Math.random()*end+start);
+						//将随机数保存到数组
+						re.push(num1);
+					}
+					return re;
+				}
+			}
+		</script>
+	</body>
+</html>

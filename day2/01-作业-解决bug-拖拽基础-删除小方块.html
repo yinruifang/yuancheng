@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>拖拽基础知识</title>
+		<style type="text/css">
+			ul,li{list-style: none;}
+			li{width: 100px; height: 50px; background: #008000; margin:10px;}
+			.box{width: 600px; height: 400px; border:5px solid blue; margin: 100px;}
+			.box div{width: 100px; height: 50px; background: #008000; margin:10px;}
+		</style>
+	</head>
+	<body>
+		<ul>
+			<!--dom节点想要拖拽，必须设置draggable="true"-->
+			<li draggable="true" title="0">111</li>
+			<li draggable="true" title="1">222</li>
+			<li draggable="true" title="2">333</li>
+		</ul>
+		<div class="box" id="box"></div>
+		<script type="text/javascript">
+			/*
+			传参使用 ：dataTransfer
+			设置：ev.dataTransfer.setData('key','hello world');
+			获取：ev.dataTransfer.getData('key');
+			*/
+			window.onload = function(){
+				
+				//1.获取到节点信息
+				var aLi = document.getElementsByTagName('li');
+				var oBox = document.getElementById('box');
+				var oUl  = document.getElementsByTagName('ul')[0];
+				for(var i = 0;i<aLi.length;i++){
+					//2.绑定开始拖拽的事件
+					aLi[i].ondragstart = function(ev){
+						console.log(this.title);
+						this.style.background = 'red';
+						//设置拖拽属性，把小方块的下标传过去，
+						ev.dataTransfer.setData('key',this.title);
+						ev.dataTransfer.setData('text',this.innerHTML);
+					}
+				}
+				
+				//拖拽目的地
+				//绑定在目的地上方的事件，会持续触发
+				//想要ondrop事件触发，必须在ondragover这个事件中阻止默认事件
+				oBox.ondragover = function(ev){
+					//阻止默认事件
+					//ev.preventDefault();
+					return false;
+				}
+				//绑定在目标元素上释放鼠标的事件
+				//注意：以后的代码中 drop经常使用
+				oBox.ondrop = function(ev){
+					//console.log("drop事件触发了");
+					//接收前面设置的属性
+					var title = ev.dataTransfer.getData('key');
+					var text = ev.dataTransfer.getData('text');
+					//console.log(text,title);
+					var oDiv = document.createElement('div');
+					oDiv.innerHTML = text;
+					oBox.appendChild(oDiv);
+					// //删除title对应的div
+					for(var i = 0;i<aLi.length;i++){
+						if(title == aLi[i].title){
+							oUl.removeChild(aLi[i]);
+						}
+					}
+					// aLi[index].parentNode.removeChild(aLi[index]);	
+				}
+			}
+			
+			/*
+			作业：修改bug，让程序不要报红
+			*/
+		</script>
+		
+	</body>
+</html>

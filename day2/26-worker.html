@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		异步线程、轮询机制 宏任务微任务
+		https://blog.csdn.net/weixin_40452130/article/details/100013712
+		https://www.cnblogs.com/lightpro/p/10562393.html
+		https://blog.csdn.net/weixin_41593408/article/details/104569918
+		https://blog.csdn.net/weixin_44486539/article/details/103155489
+		
+		worker:模拟的多线程处理方式
+		<script type="text/javascript">
+			//创建worker对象
+			var w = new Worker('test.js');
+			
+			//传输数据
+			w.postMessage("hello");
+			
+			//接收处理好的数据
+			w.onmessage = function (ev){
+				alert(ev.data);
+			}
+		</script>
+	</body>
+</html>

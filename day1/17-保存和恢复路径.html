@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas基础</title>
+		<style type="text/css">
+			#can{background: lightblue;}
+		</style>
+	</head>
+	<body>
+		<!--canvas画板，是ie8以上浏览器才支持, canvas的宽高必须在标签中设置，不可以在css样式表中设置-->
+		<canvas id="can" width="800" height="600">浏览器不支持该标记</canvas>
+		<script type="text/javascript">
+			window.onload = function(){
+				//1.获取元素
+				var oC = document.getElementById('can');
+				
+				
+				//2.设置画板的2D效果
+				var oGC = oC.getContext('2d');
+				
+				oGC.save();//保存路径
+				
+				oGC.fillStyle = 'red';
+				oGC.fillRect(30,30,100,100);
+				
+				oGC.fillStyle = 'blue';
+				oGC.fillRect(50,50,70,70);
+				oGC.restore();//恢复路径
+				//oGC.fillStyle = 'green';
+				oGC.fillRect(70,70,30,30);
+				
+			}
+			
+			//画板是有默认值的，比如：颜色的默认值是黑色
+			//save 保存路径  ，restore 恢复路径
+			//save 和 restore是成对出现的，画比较复杂的图形时，需要对原始的默认值进行保存，使用 save，当什么时候需要恢复默认值时，调用 restore
+		</script>
+	</body>
+</html>

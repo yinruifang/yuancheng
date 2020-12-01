@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas基础</title>
+		<style type="text/css">
+			#can{background: lightblue;}
+		</style>
+	</head>
+	<body>
+		<!--canvas画板，是ie8以上浏览器才支持, canvas的宽高必须在标签中设置，不可以在css样式表中设置-->
+		<canvas id="can" width="800" height="600">浏览器不支持该标记</canvas>
+		<script type="text/javascript">
+			window.onload = function(){
+				//1.获取元素
+				var oC = document.getElementById('can');
+				//2.设置画板的2D效果
+				var oGC = oC.getContext('2d');
+				//3.画曲线
+				oGC.beginPath();
+				oGC.moveTo(100,200);
+				//二次贝塞尔曲线：第一点是控制点（x，y），第二点曲线的结束点（x1,y1）
+				oGC.quadraticCurveTo(50,50,200,50);
+				oGC.stroke();
+				
+				
+			}
+		</script>
+	</body>
+</html>

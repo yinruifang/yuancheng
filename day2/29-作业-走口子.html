@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>canvas基础</title>
+		<style type="text/css">
+			#can{background: lightblue;}
+		</style>
+	</head>
+	<body>
+		<!--canvas画板，是ie8以上浏览器才支持, canvas的宽高必须在标签中设置，不可以在css样式表中设置-->
+		<canvas id="can" width="800" height="600">浏览器不支持该标记</canvas>
+		<script type="text/javascript">
+			window.onload = function(){
+				//1.获取元素
+				var oC = document.getElementById('can');
+				//2.设置画板的2D效果
+				var oGC = oC.getContext('2d');
+				//3.画方块
+				oGC.rect(0,0,50,50);
+				oGC.fill();
+				//设置x,y轴初始值
+				var x = 0;
+				var y = 0;
+				
+				var timer = setInterval(function(){
+					oGC.clearRect(0,0,800,600);
+					if(x < 750 && y == 0){
+						x += 10;
+					}else if(x == 750 &&y < 550){
+						y += 10;
+					}else if(y == 550 && x>0){
+						x -= 10;
+					}else if(y >0 &&x == 0){
+						y -= 10;
+					}
+					
+					oGC.fillRect(x,y,50,50);
+					
+				},10);
+				
+			}
+		</script>
+	</body>
+</html>

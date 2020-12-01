@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>换装游戏</title>
+		<style type="text/css">
+			.box{width: 400px; height: 600px; margin: 100px auto; text-align: center; border:1px solid #000;}
+			.cs{width: 160px; height: 200px; /* background: url(ren/man.png) no-repeat 50% bottom; */
+			border:1px solid #000; position: relative;}
+			.cs img{position: absolute;}
+			.cs img:nth-of-type(1){
+				top:6px;left:54px; z-index:4;
+			}
+			.cs img:nth-of-type(2){
+				top:16px;left:56px;z-index:3;
+			}
+			.cs img:nth-of-type(3){
+				top:59px;left:40px;z-index:2;
+			}
+			.cs img:nth-of-type(4){
+				top:102px;left:45px;z-index:1;
+			}
+			#ziyuan div{display: flex; flex-wrap: nowrap; justify-content: space-around; margin: 10px;}
+			
+		</style>
+	</head>
+	<body>
+		<div class="box">
+			<h3>给小人换装</h3>
+			<div class="cs" id="cs">
+				<img src="ren/cap4.png" alt="cap"/>
+				<img src="ren/header3.png" alt="header"/>
+				<img src="ren/clo4.png" alt="clo"/>
+				<img src="ren/kz2.png" alt="kz"/>
+			</div>
+			<div id="ziyuan"></div>	
+		</div>
+		
+		<script type="text/javascript">
+			window.onload = function(){
+				//1.初始值
+				var zb = [
+					["ren/cap1.png","ren/cap2.png","ren/cap3.png","ren/cap4.png"],
+					["ren/header1.png","ren/header2.png","ren/header3.png","ren/header4.png"],
+					["ren/clo.png","ren/clo2.png","ren/clo3.png","ren/clo4.png"],
+					["ren/kz2.png","ren/tro2.png","ren/tro3.png","ren/tro4.png"],
+				];
+				var oZiyuan = document.getElementById('ziyuan');
+				var oCS = document.getElementById('cs');
+				var aImg = oCS.getElementsByTagName('img');
+				var aImgArr = [];//放新创建的img
+				
+				
+				//2.创建新的img对象,放到 ziyuan
+				for(var i = 0;i<zb.length;i++){
+					var oDiv = document.createElement('div');
+					aImgArr[i] = new Array();
+					for(var j = 0 ;j < zb[i].length; j++){
+						var oImg = document.createElement('img');
+						oImg.src = zb[i][j];
+						oDiv.appendChild(oImg);
+						aImgArr[i][j] = oImg;
+					}
+					oZiyuan.appendChild(oDiv);
+				}
+				
+				console.log(aImgArr);
+				//3.给图片绑定开始拖拽的事件
+				for(var i = 0;i < aImgArr.length; i++){
+					for(var j = 0;j< aImgArr[i].length; j++){
+						aImgArr[i][j].index = i;
+						//4.绑定
+						aImgArr[i][j].ondragstart = function(ev){
+							//5.保存需要传递的数据
+							ev.dataTransfer.setData('mysrc',this.src);//图片的src  
+							ev.dataTransfer.setData('myindex',this.index);//类别
+						}
+					}
+				}
+				
+				//6.给小人的4个位置绑定拖拽中和拖拽放下的事件
+				for(var i = 0;i <aImg.length; i++){
+					aImg[i].index = i;
+					//7.拖拽中
+					aImg[i].ondragover = function(ev){
+						ev.preventDefault();
+					}
+					//8.拖拽放下的事件
+					aImg[i].ondrop = function(ev){
+						//9.获取被拖拽的图片的数据
+						var mysrc = ev.dataTransfer.getData('mysrc');
+						var myindex = ev.dataTransfer.getData('myindex');
+						console.log(mysrc);
+						//10.将传过来的图片赋值给目的地图片
+						
+						if(myindex == this.index){//判断类别是否符合
+							this.src = mysrc;
+						}
+						
+					}
+				}
+				
+			}
+		</script>
+		
+	</body>
+</html>

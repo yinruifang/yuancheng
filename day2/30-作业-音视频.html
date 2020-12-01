@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			button{height :30px; line-height: 30px;}
+			#pro{width: 416px;}
+		</style>
+	</head>
+	<body>
+		<!--
+		controls="controls" 控制条
+		autoplay="autoplay" 自动播放
+		loop="loop" 循环播放
+		preload="auto"  预加载 
+		-->
+		<video src="data/1.mp4"  preload="auto"></video>
+		<br/>
+		<button>播放</button>
+		<button>全屏</button>
+		<button>静音</button>
+		<button></button>
+		<button></button>
+		<input type="range" min="0" max="1" step="0.1" id="ran" /><br />
+		<progress max="100" value="0" id="pro"></progress>
+		<script type="text/javascript">
+			window.onload = function(){
+				var oV = document.getElementsByTagName('video')[0];
+				var aBtn = document.getElementsByTagName('button');
+				var oRan = document.getElementById('ran');
+				var oPro = document.getElementById('pro');
+				var type = true;//播放暂停的状态
+				
+				//播放暂停
+				aBtn[0].onclick = function(){
+					if(type){
+						oV.play();
+						this.innerHTML = "暂停";
+					}else{
+						oV.pause();
+						this.innerHTML = "播放";
+					}
+					type = !type;
+				}
+				//全屏
+				aBtn[1].onclick = function(){
+					//需要userAgent去判断浏览器类型
+					var uA = navigator.userAgent;
+					console.log(uA);
+					if(uA.indexOf('Chrome') != -1){
+						//webkitRequestFullScreen只适用于谷歌
+						oV.webkitRequestFullScreen();
+					}else if(uA.indexOf('Firefox') != -1){
+						oV.mozRequestFullScreen();
+					}
+				}
+				//静音
+				aBtn[2].onclick = function(){
+					if(oV.muted){
+						this.innerHTML = "静音";
+						oV.muted = false;
+					}else{
+						this.innerHTML = "开启";
+						oV.muted = true;
+					}
+				}
+				//总时间
+				//总时间是时间戳，还需要转为日期时间类型
+				console.log(oV.duration);
+				aBtn[3].innerHTML = oV.duration?changeTime(oV.duration):'00:03:15';
+				//播放时间
+				setInterval(function(){
+					aBtn[4].innerHTML = changeTime(oV.currentTime);
+				},1000);
+				
+				//音量
+				oRan.onchange = function(){
+					console.log(this.value);
+					oV.volume = this.value;
+				}
+				
+				//进度条
+				var timer = setInterval(function(){
+					oPro.value = oV.currentTime/oV.duration * 100;
+					if(oV.currentTime == oV.duration){//播完了
+						clearInterval(timer);
+					}
+				},1000);
+				
+				//时间戳转日期时间
+				function changeTime(time){
+					var oH = Math.floor(time/3600);//小时
+					var oM = Math.floor(time%3600/60);//分钟
+					var oS = Math.floor(time%60);//秒
+					return addZero(oH) + ':' +addZero(oM) + ':' +addZero(oS);
+				}
+				function addZero(num){
+					return num <10?"0"+num :num;
+				}
+			}
+			
+		</script>
+	</body>
+</html>
